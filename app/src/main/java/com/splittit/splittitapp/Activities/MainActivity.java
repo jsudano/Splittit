@@ -28,7 +28,11 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/**
+ * Created by jsudano on 7/29/2017.
+ */
 
+// TODO: refactor the way the start activity gets populated. It will take some flow charts :(
 public class MainActivity extends AppCompatActivity
                           implements AddItemDialog.AddItemDialogListener, SetTitleDialog.SetTitleDialogListener {
 

@@ -15,4 +15,6 @@
     <string name="add_item_dialog_negative_warning">Please input valid cost</string>
     <string name="set_title_dialog_null_warning">Please input a title</string>
     <string name="set_title">Set title</string>
+    <string name="set_payers">Set payers</string>
+    <string name="new_payer">New Payer</string>
 </resources>

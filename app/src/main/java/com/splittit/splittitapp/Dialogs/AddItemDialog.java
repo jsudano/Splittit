@@ -16,7 +16,7 @@ import com.splittit.splittitapp.R;
 import com.splittit.splittitapp.Utils.PaymentItem;
 
 /**
- * Created by scagj on 7/29/2017.
+ * Created by jsudano on 7/29/2017.
  */
 
 public class AddItemDialog extends DialogFragment {

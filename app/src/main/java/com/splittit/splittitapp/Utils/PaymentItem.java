@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by scagj on 7/20/2017.
+ * Created by jsudano on 7/20/2017.
  */
 
 public class PaymentItem implements Serializable {
@@ -42,6 +42,10 @@ public class PaymentItem implements Serializable {
 
     public void addPayer(Payer payer) {
         payers.add(payer);
+    }
+
+    public void removePayer(Payer payer) {
+        payers.remove(payer);
     }
 
     public boolean hasPayer() {
