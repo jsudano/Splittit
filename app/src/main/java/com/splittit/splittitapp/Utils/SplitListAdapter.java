@@ -87,6 +87,8 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
             }
         });
 
+        //TODO: set add and remove payer button onClicks
+
         return rowView;
     }
 

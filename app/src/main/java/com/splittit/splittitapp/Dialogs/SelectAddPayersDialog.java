@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.splittit.splittitapp.R;
+import com.splittit.splittitapp.Utils.AppUtils;
 import com.splittit.splittitapp.Utils.Payer;
 import com.splittit.splittitapp.Utils.PaymentItem;
 
@@ -21,28 +22,30 @@ import java.util.ArrayList;
 // TODO: Finish this
 public class SelectAddPayersDialog extends DialogFragment {
 
+    PaymentItem paymentItem;
+
     @Override
     public Dialog onCreateDialog(Bundle onSavedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         Bundle args = getArguments();
-        final PaymentItem item = (PaymentItem) args.getSerializable("paymentItem");
-        if (item == null) {
+        paymentItem = (PaymentItem) args.getSerializable("paymentItem");
+        if (paymentItem == null) {
             Log.e("SelectAddPayersDialog", "You need to supply a paymentItem at least");
             dismiss();
         }
-        // TODO: figure out how to save this shit in sharedpreferences
-        final ArrayList<Payer> payers = getActivity().getSharedPreferences("payers", 0);
+
+        final PaymentItem paymentItemFinal = paymentItem;
+        final ArrayList<Payer> payers = AppUtils.getPayerList(getActivity());
         CharSequence[] payerList = getPayerStrings(payers);
 
         builder.setTitle(R.string.set_payers)
-                .setMultiChoiceItems(payerList, null, new DialogInterface.OnMultiChoiceClickListener(){
+                .setMultiChoiceItems(payerList, getSelectedPayers(payers), new DialogInterface.OnMultiChoiceClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
-                            item.addPayer(payers.get(which));
+                            paymentItemFinal.addPayer(payers.get(which));
                         } else {
-                            item.removePayer(payers.get(which));
+                            paymentItemFinal.removePayer(payers.get(which));
                         }
 
                     }
@@ -57,9 +60,17 @@ public class SelectAddPayersDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // Open payer dialog
+                        NewPayerDialog d = new NewPayerDialog();
+                        Bundle b = new Bundle();
+                        Payer p = new Payer();
+                        b.putSerializable("payer", p);
+                        d.setArguments(b);
+
                         // Add new payer to payers list and set it to checked
-                        // -- Probably need to close this dialog and open a new one w/ new data to avoid silliness with indexing
-                        // Take a record of new payer to save in sharedpreferences
+                        payers.add(p);
+                        AppUtils.addPayer(getActivity(), p);
+
+                        // TODO: Figure out how to update checklist with this shit
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -78,6 +89,25 @@ public class SelectAddPayersDialog extends DialogFragment {
             toReturn[i] = payers.get(i).getName();
         }
         return toReturn;
+    }
+
+    private boolean[] getSelectedPayers(ArrayList<Payer> allPayers) {
+        ArrayList<Payer> itemPayers = paymentItem.getPayers();
+
+        boolean[] retArray = new boolean[allPayers.size()];
+        for (int i = 0; i < retArray.length; i++) {
+            retArray[i] = false;
+        }
+
+        // If any payers are already added, mark the position in the bool array as true
+        for (Payer p : itemPayers) {
+            int index = allPayers.indexOf(p);
+            if (index != -1) {
+                retArray[index] = true;
+            }
+        }
+
+        return retArray;
     }
 
 }
