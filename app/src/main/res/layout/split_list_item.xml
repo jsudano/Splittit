@@ -45,6 +45,7 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/btn_list_item_add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
@@ -58,6 +59,7 @@
             />
 
         <Button
+            android:id="@+id/btn_list_item_del"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"

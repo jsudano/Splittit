@@ -39,6 +39,7 @@ public final class AppUtils {
     /*
     Adds a payer to the current saved list
      */
+    // TODO: This doesn't actually work yet. fix it.
     public static void addPayer(Activity activity, Payer p) {
         ArrayList<Payer> payers = getPayerList(activity);
         payers.add(p);

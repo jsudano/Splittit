@@ -19,7 +19,6 @@ import java.util.ArrayList;
  * Created by jsudano on 8/5/2017.
  */
 
-// TODO: Finish this
 public class SelectAddPayersDialog extends DialogFragment {
 
     PaymentItem paymentItem;
@@ -59,18 +58,15 @@ public class SelectAddPayersDialog extends DialogFragment {
                 .setNeutralButton(R.string.new_payer, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Open payer dialog
+                        // Open newPayer dialog
                         NewPayerDialog d = new NewPayerDialog();
                         Bundle b = new Bundle();
                         Payer p = new Payer();
                         b.putSerializable("payer", p);
+                        b.putSerializable("paymentItem", paymentItemFinal);
                         d.setArguments(b);
-
-                        // Add new payer to payers list and set it to checked
-                        payers.add(p);
-                        AppUtils.addPayer(getActivity(), p);
-
-                        // TODO: Figure out how to update checklist with this shit
+                        d.show(getFragmentManager(), "newPayerDialog");
+                        dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

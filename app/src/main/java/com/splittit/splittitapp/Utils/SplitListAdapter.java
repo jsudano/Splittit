@@ -5,16 +5,19 @@ import android.app.FragmentManager;
 import android.app.LauncherActivity;
 import android.content.Context;
 import android.graphics.drawable.Icon;
+import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.splittit.splittitapp.Dialogs.AddItemDialog;
+import com.splittit.splittitapp.Dialogs.SelectAddPayersDialog;
 import com.splittit.splittitapp.R;
 
 import org.w3c.dom.Text;
@@ -55,6 +58,8 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
                 (TextView) rowView.findViewById(R.id.list_item_name),
                 (TextView) rowView.findViewById(R.id.list_item_cost),
                 (ButtonBarLayout) rowView.findViewById(R.id.split_list_button_bar),
+                (Button) rowView.findViewById(R.id.btn_list_item_add),
+                (Button) rowView.findViewById(R.id.btn_list_item_del),
                 (ImageView) rowView.findViewById(R.id.list_item_check_view));
 
         if (listItem == null) {
@@ -72,12 +77,28 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
             return rowView;
         }
 
-        PaymentItem currentItem = listItems.get(position);
+        final PaymentItem currentItem = listItems.get(position);
         if (currentItem.hasPayer()) {
             holder.getCheckView().setVisibility(View.VISIBLE);
         }
         holder.setLineItemText(currentItem.getLineItem());
         holder.setCostText(currentItem.getCost());
+        holder.getAddButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectAddPayersDialog d = new SelectAddPayersDialog();
+                Bundle b = new Bundle();
+                b.putSerializable("paymentItem", currentItem);
+                d.setArguments(b);
+                d.show(fragmentManager, "newPayerDialog");
+            }
+        });
+        holder.getDeleteButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: create delete payer dialog
+            }
+        });
 
 
         rowView.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +107,6 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
                 closeLastItem(holder);
             }
         });
-
-        //TODO: set add and remove payer button onClicks
 
         return rowView;
     }
@@ -106,14 +125,19 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
         private TextView lineItem;
         private TextView cost;
         private ButtonBarLayout buttonBar;
+        private Button addButton;
+        private Button deleteButton;
         private ImageView checkView;
 
         SplitListViewHolder(LinearLayout parentLayout, TextView lineItem, TextView cost,
-                            ButtonBarLayout buttonBar, ImageView checkView) {
+                            ButtonBarLayout buttonBar, Button addButton, Button deleteButton,
+                            ImageView checkView) {
             this.setParentLayout(parentLayout);
             this.setLineItem(lineItem);
             this.setCost(cost);
             this.setButtonBar(buttonBar);
+            this.setAddButton(addButton);
+            this.setDeleteButton(deleteButton);
             buttonBar.setVisibility(View.GONE);
             this.setCheckView(checkView);
         }
@@ -170,6 +194,22 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
 
         private void setCheckView(ImageView checkView) {
             this.checkView = checkView;
+        }
+
+        public Button getAddButton() {
+            return addButton;
+        }
+
+        public void setAddButton(Button addButton) {
+            this.addButton = addButton;
+        }
+
+        public Button getDeleteButton() {
+            return deleteButton;
+        }
+
+        public void setDeleteButton(Button deleteButton) {
+            this.deleteButton = deleteButton;
         }
     }
 
