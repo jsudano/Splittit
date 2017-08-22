@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.splittit.splittitapp.Dialogs.AddItemDialog;
 import com.splittit.splittitapp.Dialogs.SelectAddPayersDialog;
+import com.splittit.splittitapp.Dialogs.SelectRemovePayersDialog;
 import com.splittit.splittitapp.R;
 
 import org.w3c.dom.Text;
@@ -93,10 +94,17 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
                 d.show(fragmentManager, "newPayerDialog");
             }
         });
+        if (!currentItem.hasPayer()) {
+            holder.getDeleteButton().setEnabled(false);
+        }
         holder.getDeleteButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: create delete payer dialog
+                SelectRemovePayersDialog d = new SelectRemovePayersDialog();
+                Bundle b = new Bundle();
+                b.putSerializable("paymentItem", currentItem);
+                d.setArguments(b);
+                d.show(fragmentManager, "newPayerDialog");
             }
         });
 

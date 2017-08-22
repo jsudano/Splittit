@@ -18,4 +18,5 @@
     <string name="set_payers">Set payers</string>
     <string name="new_payer">New Payer</string>
     <string name="add_new_payer">Add a payer</string>
+    <string name="remove_payer">Remove payers</string>
 </resources>
