@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * Created by jsudano on 7/29/2017.
  */
 
-// TODO: refactor the way the start activity gets populated. It will take some flow charts :(
+// TODO: refactor the way the start activity gets populated (populateList). It will take some flow charts :(
 public class MainActivity extends AppCompatActivity
                           implements AddItemDialog.AddItemDialogListener, SetTitleDialog.SetTitleDialogListener {
 
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
         populateList();
     }
 

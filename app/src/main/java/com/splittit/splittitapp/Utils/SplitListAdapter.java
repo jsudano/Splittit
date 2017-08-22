@@ -119,6 +119,7 @@ public class SplitListAdapter extends ArrayAdapter<PaymentItem> {
         return rowView;
     }
 
+    // TODO: Fix this. Currently clicking on one item twice keeps it open
     private void closeLastItem(SplitListViewHolder newHolder) {
         if (lastOpenedRowHolder != null && lastOpenedRowHolder.isButtonBarVisible()) {
             lastOpenedRowHolder.getButtonBar().setVisibility(View.GONE);

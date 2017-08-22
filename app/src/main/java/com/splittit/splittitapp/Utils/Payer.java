@@ -27,4 +27,15 @@ public class Payer implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Payer)) {
+            return false;
+        }
+        if (other == null) {
+            return false;
+        }
+        return this.name.equals(((Payer) other).getName());
+    }
 }

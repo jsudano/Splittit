@@ -1,6 +1,7 @@
 package com.splittit.splittitapp.Utils;
 
 import android.app.Activity;
+import android.content.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,15 +23,16 @@ public final class AppUtils {
     /*
     Gets the current saved list of payers, returns an empty one otherwise
      */
-    public static ArrayList<Payer> getPayerList(Activity activity) {
+    public static ArrayList<Payer> getPayerList(Context context) {
         ArrayList<Payer> payers = new ArrayList<>();
-        FileInputStream fis;
         try {
-            fis = activity.openFileInput("PayerList");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            payers = (ArrayList<Payer>) ois.readObject();
-            ois.close();
-        } catch (ClassCastException | ClassNotFoundException | IOException e) {
+            // Get User info
+            FileInputStream fis = context.openFileInput("payers.dat");
+            ObjectInputStream is = new ObjectInputStream(fis);
+            payers = (ArrayList<Payer>) is.readObject();
+            is.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return payers;
@@ -40,27 +42,22 @@ public final class AppUtils {
     Adds a payer to the current saved list
      */
     // TODO: This doesn't actually work yet. fix it.
-    public static void addPayer(Activity activity, Payer p) {
-        ArrayList<Payer> payers = getPayerList(activity);
+    public static void addPayer(Context context, Payer p) {
+        ArrayList<Payer> payers = getPayerList(context);
         payers.add(p);
 
-        File directory = new File(activity.getFilesDir().getAbsolutePath()
-                + File.separator + "PayerList");
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        String filename = "PayerList";
-        ObjectOutput out;
-
         try {
-            out = new ObjectOutputStream(new FileOutputStream(directory
-                    + File.separator + filename));
-            out.writeObject(payers);
-            out.close();
+            FileOutputStream fos = context.openFileOutput("payers.dat", Context.MODE_PRIVATE);
+            ObjectOutputStream os = null;
+            os = new ObjectOutputStream(fos);
+            os.writeObject(payers);
+            os.close();
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
