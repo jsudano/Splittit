@@ -1,4 +1,4 @@
-# Splittit
+Splittit
 ===============================
 
 # Prototype for a bill-splitting app
